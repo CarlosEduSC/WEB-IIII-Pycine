@@ -1,4 +1,6 @@
 <script>
+
+    import { onMount } from 'svelte';
     let user_id = 1; // Defina o user_id conforme necessário
     let filmes = [];
 
