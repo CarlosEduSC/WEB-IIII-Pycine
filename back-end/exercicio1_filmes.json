@@ -1,0 +1,56 @@
+{
+    "titulo": "Spider-Man: Into the Spider-Verse",
+    "ano_producao": 2018,
+    "diretors": ["Bob Persichetti", "Peter Ramsey", "Rodney Rothman"],
+    "estreia": [10, 1, 2019],
+    "duracao": 117,
+    "classificacao": 12,
+    "generos": ["Ação", "Animação", "Aventura", "Família", "Ficção", "Científica", "Super-herói"],
+    "paises_origem": ["Estados Unidos da América"],
+    "sinopse": "Miles Morales é um jovem negro do Brooklyn que se tornou o Homem-Aranha inspirado no legado de Peter Parker, já falecido. Entretanto, ao visitar o túmulo de seu ídolo em uma noite chuvosa, ele é surpreendido com a presença do próprio Peter, vestindo o traje do herói aracnídeo sob um sobretudo. A surpresa fica ainda maior quando Miles descobre que ele veio de uma dimensão paralela, assim como outras versões do Homem-Aranha.",
+    "roteiristas": ["Brian Michael Bendis", "Phil Lord", "Sara Pichelli"],
+    "produtores": ["Amy Pascal", "Avi Arad", "Christina Steinberg", "Christopher Miller (II)", "Phil Lord"],
+    "elenco": [
+        {"ator": "Brian Tyree Henry", "personagems": ["Jefferson Davis (voz)"]},
+    
+        {"ator": "Hailee Steinfeld", "personagems": ["Gwen Stacy (voz)", "Spider-Gwen (voz)"]},
+
+        {"ator": "Jake Johnson", "personagems": ["Peter Parker (voz)", "Homem-Aranha (voz)"]},
+
+        {"ator": "John Mulaney", "personagems": ["Porco-Aranha (voz)"]},
+
+        {"ator": "Kimiko Glenn", "personagems": ["Peni Parker (voz)"]},
+
+        {"ator": "Liev Schreiber", "personagems": ["Wilson Fisk (voz)"]},
+
+        {"ator": "Lily Tomlin", "personagems": ["May Parker (voz)"]},
+
+        {"ator": "Luna Lauren Velez", "personagems": ["Rio Davis (voz)"]},
+
+        {"ator": "Mahershala Ali", "personagems": ["Aaron Davis (voz)", "Gatuno (voz)"]},
+
+        {"ator": "Nicolas Cage", "personagems": ["Homem-Aranha Noir (voz)"]},
+
+        {"ator": "Shameik Moore", "personagems": ["Miles Morales (voz)", "Homem-Aranha (voz)"]},
+
+        {"ator": "Chris Pine", "personagems": ["Peter Parker (voz)", "Homem-Aranha (voz)"]},
+
+        {"ator": "Greta Lee", "personagems": ["Interesting Person #2 (voz)"]},
+
+        {"ator": "Joaquín Cosio", "personagems": ["Scorpion (voz)"]},
+
+        {"ator": "Jorma Taccone", "personagems": ["Duende Verde (voz)", "Last Dude (voz)"]},
+
+        {"ator": "Kathryn Hahn", "personagems": ["Doc Ock (voz)"]},
+
+        {"ator": "Lake Bell", "personagems": ["Vanessa Fisk (voz)"]},
+
+        {"ator": "Natalie Morales (II)", "personagems": ["Miss Calleros (voz)"]},
+
+        {"ator": "Oscar Isaac", "personagems": ["Interesting Person #1 (voz)"]},
+
+        {"ator": "Stan Lee", "personagems": ["Stan (voz)"]},
+
+        {"ator": "Zoë Kravitz", "personagems": ["Mary Jane (voz)"]}
+    ]
+}
