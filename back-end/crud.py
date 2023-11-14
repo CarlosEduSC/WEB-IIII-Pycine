@@ -1,3 +1,4 @@
+import json
 from sqlalchemy.orm import Session
 import models, schemas
 
@@ -18,3 +19,35 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+def get_favorites(db: Session, user_id: int):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+
+    return json.loads(user.favoritos) if user and user.favoritos else []
+
+def add_favorite(db: Session, user_id:int, movie_id: int):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+
+    favoritos = get_favorites(db, user.id)
+
+    if movie_id not in favoritos:
+        favoritos.append(movie_id)
+
+    user.favoritos = json.dumps(favoritos)
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+def remove_favorite(db: Session, user_id:int, movie_id: int):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+
+    favoritos = get_favorites(db, user.id)
+
+    favoritos = [id for id in favoritos if id != movie_id]
+
+    user.favoritos = json.dumps(favoritos)
+    db.commit()
+    db.refresh(user)
+
+    return user

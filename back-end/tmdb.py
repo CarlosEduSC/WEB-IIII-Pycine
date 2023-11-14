@@ -8,8 +8,6 @@ def get_json(endpoint, params=None):
 
     url = f"https://api.themoviedb.org/3/{endpoint}?api_key={api_key}{params}"
 
-    print(url)
-
     response = requests.get(url)
     
     return response.json()

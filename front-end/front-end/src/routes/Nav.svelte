@@ -8,6 +8,7 @@
       <li><a href="/" on:click|preventDefault={() => (menu = 2)}>Artista</a></li>
       <li><a href="/" on:click|preventDefault={() => (menu = 3)}>Users</a></li>
       <li><a href="/" on:click|preventDefault={() => (menu = 4)}>UsersList</a></li>
+      <li><a href="/" on:click|preventDefault={() => (menu = 5)}>FavoritesList</a></li>
     </ul>
   </div>
   

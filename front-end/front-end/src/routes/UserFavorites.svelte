@@ -1,5 +1,10 @@
 <script>
+    import { onMount } from "svelte";
+    import Page from "./+page.svelte";
+
     let filmesFavoritos = [];
+
+    const user_id = 1;
     
     async function fetchFavorites() {
         const response = await fetch(`http://localhost:8000/favoritos/${user_id}`);
@@ -11,18 +16,22 @@
     }
   
     async function excluirFavorito(filme_id) {
-        const response = await fetch(`http://localhost:8000/favoritos/${user_id}/${filme_id}`, {
-            method: 'DELETE'
-        });
-        if (response.ok) {
-            console.log('Filme removido com sucesso.');
-            filmesFavoritos = filmesFavoritos.filter((filme) => filme.id !== filme_id);
-        } else {
-            console.error('Erro ao excluir o filme.');
-        }
+    try {
+      const response = await fetch(`http://localhost:8000/favoritos/${user_id}/${filme_id}`, {
+        method: 'DELETE'
+      });
+      if (response.ok) {
+        toast.success('Filme removido dos favoritos com sucesso.');
+        filmesFavoritos = filmesFavoritos.filter((filme) => filme.id !== filme_id);
+      } else {
+        throw new Error('Erro ao remover o filme dos favoritos.');
+      }
+    } catch (error) {
+      toast.error(`Erro: ${error.message}`);
     }
+  }
   
-    fetchFavorites();
+    onMount(fetchFavorites)
   </script>
   
   <div>

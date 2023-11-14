@@ -1,9 +1,12 @@
+import asyncio
 from typing import List
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Depends, Response
 from tmdb import get_json
 from sqlalchemy import update
-from fastapi import Response
 from schemas import Item
+from sqlalchemy.orm import Session
+import crud, models
+
 app = FastAPI()
 
 from fastapi.middleware.cors import (
@@ -102,7 +105,8 @@ async def filmes_populares(limit=3):
     for movie in results[:5]:
         filtro.append({
             "title": movie['original_title'],
-            "image": f"http://image.tmdb.org/t/p/w500{movie['poster_path']}"
+            "image": f"http://image.tmdb.org/t/p/w500{movie['poster_path']}",
+            "id": movie['id']
         })
     
     return filtro
@@ -143,11 +147,15 @@ async def salvar_favorito(user_id: int, filme_id: int, db: Session = Depends(get
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    if filme_id in [fav.id for fav in db_user.favoritos]:
+    favoritos = crud.get_favorites(db, user_id)
+
+    if favoritos is None:
+        favoritos = []
+    
+    if filme_id in favoritos:
         return {"message": "Filme já está na lista de favoritos."}
 
-    db_user.favoritos.append(filme_id)
-    db.commit()
+    crud.add_favorite(db, user_id, filme_id)
 
     return {"message": "Filme adicionado aos favoritos com sucesso."}
 
@@ -157,10 +165,10 @@ async def excluir_favorito(user_id: int, filme_id: int, db: Session = Depends(ge
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    db_user.favoritos.remove(filme_id)
-    db.commit()
-
-    return Response(status_code=204)
+    if crud.remove_favorite(db, user_id, filme_id) is not None:
+        return Response(status_code=204)
+    else:
+        raise HTTPException(status_code=404, detail="Favorite not found")
 
 @app.get("/favoritos/{user_id}")
 async def get_favoritos(user_id: int, db: Session = Depends(get_db)):
@@ -168,6 +176,16 @@ async def get_favoritos(user_id: int, db: Session = Depends(get_db)):
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    favoritos = []  # Recupere a lista de filmes favoritos do usuário aqui
+    ids = crud.get_favorites(db, user_id)
+
+    favoritos = []
+
+    for id in ids:
+        filme = get_json(f"movie/{id}","")
+        favoritos.append({
+            "id": filme['id'],
+            "title": filme['original_title'],
+            "image": f"http://image.tmdb.org/t/p/w500{filme['poster_path']}",
+        })
 
     return favoritos
