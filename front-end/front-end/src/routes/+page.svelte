@@ -10,6 +10,8 @@
     import UserList from "./UserList.svelte";
     import UserFavorites from "./UserFavorites.svelte";
     import { onMount } from 'svelte';
+    import SearchMovie from "./SearchMovie.svelte";
+    import SearchArtist from "./SearchArtist.svelte";
 
     let filmes = [];
 
@@ -41,5 +43,9 @@
         <UserList/>
     {:else if menu == 5}
         <UserFavorites user_id={user_id}/>
+    {:else if menu == 6}
+        <SearchMovie/>
+    {:else if menu == 7}
+        <SearchArtist/>
     {/if}
 </div>

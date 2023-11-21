@@ -74,11 +74,20 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @app.get("/filme/{title}")
 async def find_movie(title: str):
-    """ 
-    procura filmes pelo titulo e ordena pelos mais populares 
-    Exemplo: /filme/avatar
-    """
-    return {"title": title}
+    data = get_json("search/movie", f"&query={title}&language=en-US")
+    
+    results = data['results']
+
+    movies = []
+
+    for movie in results:
+        movies.append({
+            "title": movie['original_title'],
+            "image": f"http://image.tmdb.org/t/p/w500{movie['poster_path']}",
+            "id": movie['id']
+        })
+
+    return movies
 
 # ========================================================
 
@@ -116,21 +125,28 @@ async def get_artista(name: str):
     """ 
     obtem lista de artista pelo nome e popularidade 
     """
-    data = get_json(
-        "/search/person", f"?query={name}&language=en-US"
-    )
-    results = data['results']
-    filtro = []
-    for artist in results:
-        filtro.append({
-            'id': artist['id'],
-            'name': artist['name'],
-            'rank': artist['popularity']
-        })
-    # ordenar lista de artistas (filtro) pelo atributo rank
-    filtro.sort(reverse=True, key=lambda artist:artist['rank'])
-    # return data
-    return filtro
+    data = get_json("search/person", f"&query={name}&language=en-US")
+
+    profile_data = get_json(f"person/{1100}", "&language=en-US")
+
+    if 'results' in data:
+        results = data['results']
+        filtro = []
+        for artist in results:
+            profile_data = get_json(f"person/{artist['id']}", "&language=en-US")
+            filtro.append({
+                'id': profile_data['id'],
+                'name': profile_data['name'],
+                'rank': profile_data['popularity'],
+                'image': f"https://image.tmdb.org/t/p/original{profile_data['profile_path']}",
+                'biography': profile_data['biography'],
+                'birthday': profile_data['birthday']
+            })
+        filtro.sort(reverse=True, key=lambda artist: artist['rank'])
+        
+        return filtro
+    else:
+        return []
 
 
 @app.get("/artista/{id}")
