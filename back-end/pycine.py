@@ -205,3 +205,55 @@ async def get_favoritos(user_id: int, db: Session = Depends(get_db)):
         })
 
     return favoritos
+
+@app.post("/favoritos_artista/{user_id}/{artista_id}")
+async def salvar_artista_favorito(user_id: int, artista_id: int, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db, user_id)
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    favoritos = crud.get_favorite_artists(db, user_id)
+
+    if favoritos is None:
+        favoritos = []
+    
+    if artista_id in favoritos:
+        return {"message": "Filme já está na lista de favoritos."}
+
+    crud.add_favorite_artist(db, user_id, artista_id)
+
+    return {"message": "Filme adicionado aos favoritos com sucesso."}
+
+@app.delete("/favoritos_artista/{user_id}/{artista_id}")
+async def excluir_artista_favorito(user_id: int, artista_id: int, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db, user_id)
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if crud.remove_favorite_artist(db, user_id, artista_id) is not None:
+        return Response(status_code=204)
+    else:
+        raise HTTPException(status_code=404, detail="Favorite not found")
+
+@app.get("/favoritos_artista/{user_id}")
+async def get_artistas_favoritos(user_id: int, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db, user_id)
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    ids = crud.get_favorite_artists(db, user_id)
+
+    favoritos = []
+
+    for id in ids:
+        artista = get_json(f"person/{id}","")
+        favoritos.append({
+            'id': artista['id'],
+            'name': artista['name'],
+            'rank': artista['popularity'],
+            'image': f"https://image.tmdb.org/t/p/original{artista['profile_path']}",
+            'biography': artista['biography'],
+            'birthday': artista['birthday']
+        })
+
+    return favoritos

@@ -48,3 +48,46 @@
       {/each}
     {/if}
   </div>
+
+  <style>
+    div {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+  
+    .favorite-item {
+      border: 1px solid #dee2e6;
+      padding: 15px;
+      margin: 10px;
+      border-radius: 8px;
+      background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+  
+    h3 {
+      color: #343a40;
+    }
+  
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 10px;
+    }
+  
+    button {
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+  
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>

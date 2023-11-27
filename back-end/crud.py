@@ -23,7 +23,7 @@ def create_user(db: Session, user: schemas.UserCreate):
 def get_favorites(db: Session, user_id: int):
     user = db.query(models.User).filter(models.User.id == user_id).first()
 
-    return json.loads(user.favoritos) if user and user.favoritos else []
+    return json.loads(user.filmesFavoritos) if user and user.filmesFavoritos else []
 
 def add_favorite(db: Session, user_id:int, movie_id: int):
     user = db.query(models.User).filter(models.User.id == user_id).first()
@@ -33,7 +33,7 @@ def add_favorite(db: Session, user_id:int, movie_id: int):
     if movie_id not in favoritos:
         favoritos.append(movie_id)
 
-    user.favoritos = json.dumps(favoritos)
+    user.filmesFavoritos = json.dumps(favoritos)
     db.commit()
     db.refresh(user)
 
@@ -46,7 +46,39 @@ def remove_favorite(db: Session, user_id:int, movie_id: int):
 
     favoritos = [id for id in favoritos if id != movie_id]
 
-    user.favoritos = json.dumps(favoritos)
+    user.filmesFavoritos = json.dumps(favoritos)
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+def get_favorite_artists(db: Session, user_id: int):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+
+    return json.loads(user.artistasFavoritos) if user and user.artistasFavoritos else []
+
+def add_favorite_artist(db: Session, user_id: int, artist_id: int):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+
+    favorite_artists = get_favorite_artists(db, user.id)
+
+    if artist_id not in favorite_artists:
+        favorite_artists.append(artist_id)
+
+    user.artistasFavoritos = json.dumps(favorite_artists)
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+def remove_favorite_artist(db: Session, user_id: int, artist_id: int):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+
+    favorite_artists = get_favorite_artists(db, user.id)
+
+    favorite_artists = [id for id in favorite_artists if id != artist_id]
+
+    user.artistasFavoritos = json.dumps(favorite_artists)
     db.commit()
     db.refresh(user)
 
